@@ -1,56 +1,42 @@
 <template>
   <div id="app">
-    <hscore :scoreh="scoreh" :plusoneh="plusoneh" :plustwoh="plustwoh" :plusthreeh="plusthreeh" :minusoneh="minusoneh"></hscore>
-    <ascore :scorea="scorea" :plusonea="plusonea" :plustwoa="plustwoa" :plusthreea="plusthreea" :minusonea="minusonea"></ascore>
+    <score-board :score-info="scores.home" :update-score="updateHomeScore"></score-board>
+    <score-board :score-info="scores.away" :update-score="updateAwayScore"></score-board>
   </div>
 </template>
 
 <script>
-import Hscore from './components/Hscore'
-import Ascore from './components/Ascore'
+import ScoreBoard from './components/ScoreBoard'
+
 export default {
   data () {
     return {
-      scoreh: 0,
-      scorea: 2
+      scores: {
+        home: {
+          score: 0,
+          name: 'Home'
+        },
+        away: {
+          score: 0,
+          name: 'Away'
+        }
+      }
     }
   },
   components: {
-    Hscore,
-    Ascore
+    ScoreBoard
   },
   methods: {
-    plusoneh: function () {
-      this.scoreh = this.scoreh + 1
-    },
-    plusonea: function () {
-      this.scorea = this.scorea + 1
-    },
-    plustwoh: function () {
-      this.scoreh = this.scoreh + 2
-    },
-    plustwoa: function () {
-      this.scorea = this.scorea + 2
-    },
-    plusthreeh: function () {
-      this.scoreh = this.scoreh + 3
-    },
-    plusthreea: function () {
-      this.scorea = this.scorea + 3
-    },
-    minusoneh: function () {
-      if (this.scoreh <= 0) {
-        this.scoreh = 0
-      } else {
-        this.scoreh = this.scoreh - 1
+    updateScore: function (index, point) {
+      if (this.scores[index].score > 0 || point !== -1) {
+        this.scores[index].score = this.scores[index].score + point
       }
     },
-    minusonea: function () {
-      if (this.scorea <= 0) {
-        this.scorea = 0
-      } else {
-        this.scorea = this.scorea - 1
-      }
+    updateHomeScore: function (point) {
+      this.updateScore('home', point)
+    },
+    updateAwayScore: function (point) {
+      this.updateScore('away', point)
     }
   }
 }
